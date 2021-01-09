@@ -1,37 +1,34 @@
 <?php
 
-
-namespace App\Data;
-
+namespace App\DataFixtures;
 
 use App\Entity\Status;
 use App\Entity\User;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class datas
+class AppFixtures extends Fixture
 {
 
     /**@var UserPasswordEncoderInterface */
     private $encoder;
 
+
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->encoder = $encoder;
     }
-
-    /**
-     * @param ObjectManager $manager
-     */
-    public function load(ObjectManager $manager){
+    public function load(ObjectManager $manager)
+    {
 
         //Status datas creation
         $statusAble = new Status();
-        $statusAble->setName("Able");
+        $statusAble->setName("Open");
         $manager->persist($statusAble);
 
         $statusDisable = new Status();
-        $statusDisable->setName("Disable");
+        $statusDisable->setName("Close");
         $manager->persist($statusDisable);
 
         //User datas creation
@@ -43,7 +40,5 @@ class datas
         $manager->persist($user);
 
         $manager->flush();
-
     }
-
 }
