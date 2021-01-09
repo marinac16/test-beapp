@@ -15,27 +15,24 @@ class datas
     /**@var UserPasswordEncoderInterface */
     private $encoder;
 
-    /**@var ObjectManager */
-    private $manager;
-
-    public function __construct(UserPasswordEncoderInterface $encoder, ObjectManager $manager)
+    public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->encoder = $encoder;
-        $this->manager = $manager;
     }
 
     /**
+     * @param ObjectManager $manager
      */
-    public function load(){
+    public function load(ObjectManager $manager){
 
         //Status datas creation
         $statusAble = new Status();
         $statusAble->setName("Able");
-        $this->manager->persist($statusAble);
+        $manager->persist($statusAble);
 
         $statusDisable = new Status();
         $statusDisable->setName("Disable");
-        $this->manager->persist($statusDisable);
+        $manager->persist($statusDisable);
 
         //User datas creation
         $user = new User();
@@ -43,9 +40,9 @@ class datas
         $hash = $this->encoder->encodePassword($user, "admin");
         $user->setPassword($hash);
         $user->setRoles(["ADMIN"]);
-        $this->manager->persist($user);
+        $manager->persist($user);
 
-        $this->manager->flush();
+        $manager->flush();
 
     }
 
