@@ -41,14 +41,19 @@ class Station
     private $bikeQuantityAvailable;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="stations")
+     * @ORM\OneToOne(targetEntity=Position::class, cascade={"persist", "remove"})
+     */
+    private $position;
+
+    /**
+     * @ORM\Column(type="string", length=255)
      */
     private $status;
 
     /**
-     * @ORM\OneToOne(targetEntity=Position::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="stations")
      */
-    private $position;
+    private $city;
 
 
 
@@ -105,18 +110,6 @@ class Station
         return $this;
     }
 
-    public function getStatus(): ?Status
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?Status $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     public function getPosition(): ?Position
     {
         return $this->position;
@@ -125,6 +118,30 @@ class Station
     public function setPosition(?Position $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

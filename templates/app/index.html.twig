@@ -2,8 +2,16 @@
 
 {% block title %}TapAndGo{% endblock %}
 
+{% block stylesheets %}
+    <link href="https://bootswatch.com/4/lux/bootstrap.min.css" rel="stylesheet">
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
-    <H1> Bienvenue sur TAPANDGO</H1>
+    <div id="app"></div>
+{% endblock %}
 
 
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}
