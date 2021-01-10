@@ -4,6 +4,9 @@ import CitiesAPI from "../services/CitiesAPI"
 const Backoffice = props => {
 
   const [cities, setcities] = useState([]);
+  const [city, setCity] = useState({
+    name: ""
+  });
 
   //Get Cities List
   const fetchCities = async () => {
@@ -21,6 +24,17 @@ const Backoffice = props => {
     fetchCities();
   });
 
+  // City register
+  function register(cityName) {
+    try {
+      setCity(cityName);
+      CitiesAPI.add(city);
+      console.log("Well done, you just register " + cityName);
+    }catch (e) {
+      console.log("error " + e.response)
+    }
+  };
+
   return(<>
       <h1>Welcome on board</h1>
       <table className="table">
@@ -32,12 +46,11 @@ const Backoffice = props => {
         </thead>
         <tbody>
         {cities.map(city => (
-          <tr key={city.id}>
+          <tr key={city.name}>
             <td>{city.name.charAt(0).toUpperCase() + city.name.substring(1)}</td>
             <td>
-              <button type="button" className="btn btn-outline-primary mr-1">Détails</button>
-              <button type="button" className="btn btn-outline-success">Ajouter</button>
-              <button type="button" className="btn btn-outline-danger ml-1">Supprimer</button>
+              <input name="name" type="button" className="btn btn-outline-success mr-1" value="Activer" onClick={() => register(city.name)}/>
+              <input name="name" type="button" className="btn btn-outline-danger" value="Désactiver" onClick={() => delete(city.name)}/>
             </td>
           </tr>
         ))}

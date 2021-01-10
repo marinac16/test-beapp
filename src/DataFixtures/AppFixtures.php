@@ -3,6 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\City;
+use App\Entity\Position;
+use App\Entity\Station;
 use App\Entity\Status;
 use App\Entity\User;
 use App\Services\DatasExt;
@@ -36,18 +38,36 @@ class AppFixtures extends Fixture
         $manager->persist($user);
 
 
-        /*//Cities datas creation
-        $obj = $this->dataExt->getDatas("https://api.jcdecaux.com/vls/v3/contracts?apiKey=eac86f2a1287f417645f574439af24278441bd8a");
+        //Cities datas creation
+        $json = file_get_contents("https://api.jcdecaux.com/vls/v3/contracts?apiKey=eac86f2a1287f417645f574439af24278441bd8a");
+        $obj = json_decode($json, true);
 
-        foreach ($obj['name'] as $city) {
+        foreach ($obj as $city) {
             $newcity = new City();
-            $newcity->setName($city);
+            $newcity->setName($city['name']);
             $manager->persist($newcity);
-            $manager->flush();
 
 
-        }*/
+            //Station datas creation
+            $json = file_get_contents("https://api.jcdecaux.com/vls/v1/stations?contract=". $newcity->getName() ."&apiKey=eac86f2a1287f417645f574439af24278441bd8a");
+            $obj = json_decode($json, true);
 
+            foreach ($obj as $station) {
+                $newStation = new Station();
+                $newStation->setName($station['name']);
+                $newStation->setAdress($station['address']);
+                $newStation->setCapacity($station['bike_stands']);
+                $newStation->setBikeQuantityAvailable($station['available_bikes']);
+                $newStation->setCity($newcity->getId());
+                $newPosition = new Position();
+                $newPosition->setLatitude($station['position']['lat']);
+                $newPosition->setLongitude($station['position']['lng']);
+                $newStation->setPosition($newPosition);
+                $manager->persist($newPosition);
+                $manager->persist($newStation);
+
+            }
+        }
 
 
 

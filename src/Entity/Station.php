@@ -9,7 +9,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=StationRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={
+ *     "groups"={"stations_read"}
+ *     }
+ * )
  */
 class Station
 {
@@ -22,36 +26,43 @@ class Station
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"stations_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"stations_read"})
      */
     private $adress;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"stations_read"})
      */
     private $capacity;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"stations_read"})
      */
     private $bikeQuantityAvailable;
 
     /**
      * @ORM\OneToOne(targetEntity=Position::class, cascade={"persist", "remove"})
+     * @Groups({"stations_read"})
      */
     private $position;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"stations_read"})
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="stations")
+     * @Groups({"stations_read"})
      */
     private $city;
 
