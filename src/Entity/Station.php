@@ -26,45 +26,46 @@ class Station
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"stations_read"})
+     * @Groups({"stations_read", "cities_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"stations_read"})
+     * @Groups({"stations_read", "cities_read"})
      */
     private $adress;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"stations_read"})
+     * @Groups({"stations_read", "cities_read"})
      */
     private $capacity;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"stations_read"})
+     * @Groups({"stations_read", "cities_read"})
      */
     private $bikeQuantityAvailable;
 
     /**
      * @ORM\OneToOne(targetEntity=Position::class, cascade={"persist", "remove"})
-     * @Groups({"stations_read"})
+     * @Groups({"stations_read", "cities_read"})
      */
     private $position;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"stations_read"})
-     */
-    private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="stations")
      * @Groups({"stations_read"})
      */
     private $city;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Statut::class, inversedBy="stations", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"stations_read", "cities_read"})
+     */
+    private $statut;
 
 
 
@@ -133,18 +134,6 @@ class Station
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     public function getCity(): ?City
     {
         return $this->city;
@@ -153,6 +142,18 @@ class Station
     public function setCity(?City $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getStatut(): ?Statut
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(?Statut $statut): self
+    {
+        $this->statut = $statut;
 
         return $this;
     }

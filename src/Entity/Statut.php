@@ -3,21 +3,20 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CityRepository;
+use App\Repository\StatutRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=CityRepository::class)
+ * @ORM\Entity(repositoryClass=StatutRepository::class)
  * @ApiResource(
  *     normalizationContext={
- *     "groups"={"cities_read"}
- *     }
- * )
+ *     "groups"={"status_read"}
+ *     })
  */
-class City
+class Statut
 {
     /**
      * @ORM\Id
@@ -28,32 +27,24 @@ class City
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"cities_read", "stations_read"})
+     * @Groups({"stations_read", "cities_read", "status_read"})
      */
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity=Position::class, cascade={"persist", "remove"})
-     * @Groups({"cities_read"})
-     */
-    private $position;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Station::class, mappedBy="city")
-     * @Groups({"cities_read"})
+     * @ORM\OneToMany(targetEntity=Station::class, mappedBy="statut", cascade={"persist", "remove"})
      */
     private $stations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Statut::class, inversedBy="cities", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"cities_read", "stations_read"})
+     * @ORM\OneToMany(targetEntity=City::class, mappedBy="statut", cascade={"persist", "remove"})
      */
-    private $statut;
+    private $cities;
 
     public function __construct()
     {
         $this->stations = new ArrayCollection();
+        $this->cities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -73,18 +64,6 @@ class City
         return $this;
     }
 
-    public function getPosition(): ?Position
-    {
-        return $this->position;
-    }
-
-    public function setPosition(?Position $position): self
-    {
-        $this->position = $position;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Station[]
      */
@@ -97,7 +76,7 @@ class City
     {
         if (!$this->stations->contains($station)) {
             $this->stations[] = $station;
-            $station->setCity($this);
+            $station->setStatut($this);
         }
 
         return $this;
@@ -107,22 +86,40 @@ class City
     {
         if ($this->stations->removeElement($station)) {
             // set the owning side to null (unless already changed)
-            if ($station->getCity() === $this) {
-                $station->setCity(null);
+            if ($station->getStatut() === $this) {
+                $station->setStatut(null);
             }
         }
 
         return $this;
     }
 
-    public function getStatut(): ?Statut
+    /**
+     * @return Collection|City[]
+     */
+    public function getCities(): Collection
     {
-        return $this->statut;
+        return $this->cities;
     }
 
-    public function setStatut(?Statut $statut): self
+    public function addCity(City $city): self
     {
-        $this->statut = $statut;
+        if (!$this->cities->contains($city)) {
+            $this->cities[] = $city;
+            $city->setStatut($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCity(City $city): self
+    {
+        if ($this->cities->removeElement($city)) {
+            // set the owning side to null (unless already changed)
+            if ($city->getStatut() === $this) {
+                $city->setStatut(null);
+            }
+        }
 
         return $this;
     }
