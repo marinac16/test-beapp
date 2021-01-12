@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use App\Repository\CityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,8 +16,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *     normalizationContext={
  *     "groups"={"cities_read"}
+ *     },
+ *     attributes={
+ *     "order": {"name":"asc"}
  *     }
  * )
+ * @ApiFilter(BooleanFilter::class, properties={"statut"})
  */
 class City
 {
@@ -23,6 +29,7 @@ class City
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"cities_read"})
      */
     private $id;
 
@@ -45,11 +52,10 @@ class City
     private $stations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Statut::class, inversedBy="cities", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="boolean")
      * @Groups({"cities_read", "stations_read"})
      */
-    private $statut;
+    private $statut = false;
 
     public function __construct()
     {
@@ -115,15 +121,21 @@ class City
         return $this;
     }
 
-    public function getStatut(): ?Statut
+    /**
+     * @return bool
+     */
+    public function isStatut(): bool
     {
         return $this->statut;
     }
 
-    public function setStatut(?Statut $statut): self
+    /**
+     * @param bool $statut
+     */
+    public function setStatut(bool $statut): void
     {
         $this->statut = $statut;
-
-        return $this;
     }
+
+
 }

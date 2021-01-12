@@ -61,11 +61,10 @@ class Station
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Statut::class, inversedBy="stations", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"stations_read", "cities_read"})
+     * @ORM\Column(type="boolean")
+     * @Groups({"cities_read", "stations_read"})
      */
-    private $statut;
+    private $statut = false;
 
 
 
@@ -146,16 +145,22 @@ class Station
         return $this;
     }
 
-    public function getStatut(): ?Statut
+    /**
+     * @return bool
+     */
+    public function isStatut(): bool
     {
         return $this->statut;
     }
 
-    public function setStatut(?Statut $statut): self
+    /**
+     * @param bool $statut
+     */
+    public function setStatut(bool $statut): void
     {
         $this->statut = $statut;
-
-        return $this;
     }
+
+
 
 }

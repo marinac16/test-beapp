@@ -2,16 +2,22 @@ import axios from "axios";
 
 function findAll() {
   return axios
-    .get("https://api.jcdecaux.com/vls/v3/contracts?apiKey=eac86f2a1287f417645f574439af24278441bd8a")
-    .then(response => response.data);
+    .get("http://localhost:8080/api/cities")
+    .then(response => response.data["hydra:member"]);
 }
 
-function add(value) {
-  return axios.post("http://localhost:8080/api/cities", value);
+function findAllByStatus(value) {
+  return axios
+    .get("http://localhost:8080/api/cities?statut=" + value)
+    .then(response => response.data["hydra:member"]);
+}
 
+function update(city, id) {
+  return axios.put("http://localhost:8080/api/cities/" + id, {city});
 }
 
 export default {
   findAll,
-  add
+  findAllByStatus,
+  update,
 }

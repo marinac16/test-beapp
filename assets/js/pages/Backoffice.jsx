@@ -3,35 +3,34 @@ import CitiesAPI from "../services/CitiesAPI"
 
 const Backoffice = props => {
 
-  const [cities, setcities] = useState([]);
-  const [city, setCity] = useState({
-    name: ""
-  });
+  const [citiesDeactivated, setCitiesDeactivated] = useState([]);
+  const [StatusCity, setStatusCity] = useState(false);
 
-  //Get Cities List
-  const fetchCities = async () => {
+
+  //Get Cities List where status is deactivated
+  const fetchCitiesByStatusFalse = async () => {
+    const value = false;
     try {
-      const data = await CitiesAPI.findAll();
-      setcities(data);
+      const data = await CitiesAPI.findAllByStatus(value);
+      setCitiesDeactivated(data);
     }catch (e) {
-      console.log("error : " + e)
-
     }
   };
 
   //Components Charging
   useEffect(() => {
-    fetchCities();
+    fetchCitiesByStatusFalse();
   });
 
-  // City register
-  function register(cityName) {
+  //Update the city's status
+  const handleUpdateStatus = async (id) => {
+    setStatusCity(true);
+    console.log("status true");
     try {
-      setCity(cityName);
-      CitiesAPI.add(city);
-      console.log("Well done, you just register " + cityName);
+      await CitiesAPI.update(StatusCity, id);
+      console.log("put");
     }catch (e) {
-      console.log("error " + e.response)
+      console.log(e);
     }
   };
 
@@ -45,12 +44,11 @@ const Backoffice = props => {
         </tr>
         </thead>
         <tbody>
-        {cities.map(city => (
-          <tr key={city.name}>
+        {citiesDeactivated.map(city => (
+          <tr key={city.id}>
             <td>{city.name.charAt(0).toUpperCase() + city.name.substring(1)}</td>
             <td>
-              <input name="name" type="button" className="btn btn-outline-success mr-1" value="Activer" onClick={() => register(city.name)}/>
-              <input name="name" type="button" className="btn btn-outline-danger" value="Désactiver" onClick={() => delete(city.name)}/>
+              <input  name="name" type="button" className="btn btn-outline-success mr-1" value="Activer" onClick={() => handleUpdateStatus(city.id)}/>
             </td>
           </tr>
         ))}
