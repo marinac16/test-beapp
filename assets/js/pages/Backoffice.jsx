@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import CitiesAPI from "../services/CitiesAPI"
 
-const Backoffice = props => {
+const Backoffice = (props) => {
 
   const [citiesDeactivated, setCitiesDeactivated] = useState([]);
-  const [statusCity, setStatusCity] = useState(true);
+  const [city, setCity] = useState({
+    statut:true
+  });
 
 
   //Get Cities List where status is deactivated
@@ -22,11 +24,11 @@ const Backoffice = props => {
     fetchCitiesByStatusFalse();
   });
 
+
   //Update the city's status
   const handleUpdateStatus = async (id) => {
     try {
-      await CitiesAPI.update(statusCity, id);
-      console.log("put");
+      await CitiesAPI.update(city, id);
     }catch (e) {
       console.log(e);
     }
@@ -46,7 +48,7 @@ const Backoffice = props => {
           <tr key={city.id}>
             <td>{city.name.charAt(0).toUpperCase() + city.name.substring(1)}</td>
             <td>
-              <input  name="name" type="button" className="btn btn-outline-success mr-1" value="Activer" onClick={() => handleUpdateStatus(city.id)}/>
+              <input  name="statut" type="button" className="btn btn-outline-success mr-1" value="Activer" onClick={() => handleUpdateStatus(city.id)}/>
             </td>
           </tr>
         ))}
