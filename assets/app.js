@@ -16,6 +16,7 @@ import UsersAPI from "./js/services/UsersAPI";
 import PrivateRoute from "./js/components/PrivateRoute";
 import AuthContext from "./js/contexts/AuthContext";
 import { withRouter } from "react-router-dom"
+import BOCityDetails from "./js/pages/BOCityDetails";
 
 UsersAPI.setup();
 
@@ -32,6 +33,7 @@ const App = () => {
         <main className="container pt-5">
           <Switch>
             <Route path="/login" render={props => <LoginPage onLogin={setIsAuthenticated} {...props}/>}/>
+            <PrivateRoute path="/backoffice/Cities/:id" component={BOCityDetails}/>
             <PrivateRoute path="/backoffice/Cities" component={BOCity}/>
             <PrivateRoute path="/backoffice/Stations" component={BOStation}/>
             <PrivateRoute path="/backoffice" component={Backoffice}/>

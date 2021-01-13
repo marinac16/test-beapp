@@ -23,7 +23,7 @@ const LoginPage = ({history}) => {
     try {
       await UsersAPI.authenticate(credentials);
       setIsAuthenticated(true);
-      history.replace("/backoffice")
+      history.replace("/backoffice/Cities")
     }catch (e) {
       console.log(e)
     }

@@ -16,18 +16,18 @@ const Navbar = ({history}) => {
   return(
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <NavLink to="/" className="navbar-brand">TAPANDGO</NavLink>
-      <ul className="navbar-nav mr-auto">
-        <li className="nav-item">
-          <NavLink to="/backoffice/Cities" className="nav-link text-muted">My cities</NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to="/backoffice/Stations" className="nav-link text-muted">Station</NavLink>
-        </li>
-      </ul>
+      {isAuthenticated && <>
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <NavLink to="/backoffice/Cities" className="nav-link text-muted">My cities</NavLink>
+          </li>
+        </ul>
+      </>
+      }
       <ul className="navbar-nav ml-auto">
         {!isAuthenticated && <>
           <li className="nav-item">
-            <NavLink to="/backoffice" className="btn btn-outline-secondary">BackOffice</NavLink>
+            <NavLink to="/backoffice/Cities" className="btn btn-outline-secondary">BackOffice</NavLink>
           </li>
         </> ||
         <li className="nav-item">

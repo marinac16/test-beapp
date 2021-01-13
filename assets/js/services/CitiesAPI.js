@@ -12,6 +12,12 @@ function findAllByStatus(value) {
     .then(response => response.data["hydra:member"]);
 }
 
+function find(id) {
+  return axios
+    .get("http://localhost:8080/api/cities/" + id)
+    .then(response => response.data)
+}
+
 function update(cityStatus, id) {
   return axios.put("http://localhost:8080/api/cities/" + id, cityStatus, {
     headers: {
@@ -24,4 +30,5 @@ export default {
   findAll,
   findAllByStatus,
   update,
+  find
 }
