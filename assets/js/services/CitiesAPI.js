@@ -12,8 +12,12 @@ function findAllByStatus(value) {
     .then(response => response.data["hydra:member"]);
 }
 
-function update(city, id) {
-  return axios.put("http://localhost:8080/api/cities/" + id, {city});
+function update(cityStatus, id) {
+  return axios.put("http://localhost:8080/api/cities/" + id, cityStatus, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
 }
 
 export default {

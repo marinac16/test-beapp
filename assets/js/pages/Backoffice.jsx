@@ -4,7 +4,7 @@ import CitiesAPI from "../services/CitiesAPI"
 const Backoffice = props => {
 
   const [citiesDeactivated, setCitiesDeactivated] = useState([]);
-  const [StatusCity, setStatusCity] = useState(false);
+  const [statusCity, setStatusCity] = useState(true);
 
 
   //Get Cities List where status is deactivated
@@ -24,10 +24,8 @@ const Backoffice = props => {
 
   //Update the city's status
   const handleUpdateStatus = async (id) => {
-    setStatusCity(true);
-    console.log("status true");
     try {
-      await CitiesAPI.update(StatusCity, id);
+      await CitiesAPI.update(statusCity, id);
       console.log("put");
     }catch (e) {
       console.log(e);
