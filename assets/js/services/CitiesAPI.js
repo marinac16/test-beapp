@@ -1,10 +1,5 @@
 import axios from "axios";
 
-function findAll() {
-  return axios
-    .get("http://localhost:8080/api/cities")
-    .then(response => response.data["hydra:member"]);
-}
 
 function findAllByStatus(value) {
   return axios
@@ -27,7 +22,6 @@ function update(cityStatus, id) {
 }
 
 export default {
-  findAll,
   findAllByStatus,
   update,
   find
