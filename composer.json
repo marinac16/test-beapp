@@ -78,7 +78,13 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "requirements-checker": "script",
             "doctrine:migrations:migrate --no-intercation": "symfony-cmd"
-        }
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
     },
     "conflict": {
         "symfony/symfony": "*"
